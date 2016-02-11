@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>PoemTyper</title>
+<style>
+textarea {
+	width:100%;
+	height:40%;
+}
+</style>
+</head>
+<body>
+<textarea id="poemSource" ></textarea>
+<p>
+<button id="setButton" type="">set!</button> <button id="showButton" type="" style="display:none;">show</button>
+<p>
+<textarea id="inputPoem" style="display:none;background-color:'white';"></textarea>
+<p>
+<script type="text/javascript" charset="utf-8">
+
+	var poemSource = document.getElementById("poemSource");
+	var setButton = document.getElementById("setButton");
+	var showButton = document.getElementById("showButton");
+	var inputPoem = document.getElementById("inputPoem");
+
+	var urPoem="";
+
+	function setClick(){
+		poemSource.style.display="none";
+		setButton.style.display="none";
+		showButton.style.display="initial";
+		inputPoem.style.display="initial";
+		inputPoem.focus();		
+	}
+
+	function showClick(){
+		poemSource.style.display="initial";
+		setButton.style.display="initial";
+		showButton.style.display="none";
+		//inputPoem.style.display="none";
+	}
+
+	function onSourceChange(){
+		urPoem = poemSource.value;
+		onInput();
+	}
+
+	function onInput(){
+		inputstr = inputPoem.value;
+		result="ok";
+		if (inputstr.length>urPoem.length){
+			result="bad";
+		}
+		if (inputstr===urPoem)
+		{
+			result="perfect"
+		}
+		if (urPoem.substring(0,inputstr.length)!==inputstr){
+			result="bad";
+		}
+
+		switch(result){
+			case "bad":
+			inputPoem.style.backgroundColor="pink"
+			break;	
+			case "ok":
+			inputPoem.style.backgroundColor="white"
+			break;	
+			case "perfect":
+			inputPoem.style.backgroundColor="lightgreen"
+			break;			
+		}
+	}
+
+	poemSource.oninput=onSourceChange;
+	setButton.onclick=setClick;
+	showButton.onclick=showClick;
+	inputPoem.oninput=onInput;	
+</script>
+</body>
+</html>
