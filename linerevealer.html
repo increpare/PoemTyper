@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>LineRevealer</title>
+<style>
+textarea {
+	width:100%;
+	height:40%;
+}
+</style>
+</head>
+<body>
+<textarea spellcheck="false" id="poemSource" ></textarea>
+<p>
+<button id="setButton" type="">set!</button> <button id="showButton" type="" style="display:none;">show</button>
+<p>
+<div id="outputPoem" ></div>
+<p>
+<script type="text/javascript" charset="utf-8">
+
+	var poemSource = document.getElementById("poemSource");
+	var setButton = document.getElementById("setButton");
+	var showButton = document.getElementById("showButton");
+	var outputPoem = document.getElementById("outputPoem");
+
+	var urPoem="";
+
+	var lineIndex=0;
+	var playMode=false;
+
+	function setClick(){
+		poemSource.style.display="none";
+		setButton.style.display="none";
+		showButton.style.display="initial";
+		outputPoem.style.display="initial";
+		playMode=true;
+		Redraw();
+	}
+
+	function showClick(){
+		poemSource.style.display="initial";
+		setButton.style.display="initial";
+		showButton.style.display="none";
+		outputPoem.style.display="none";
+		playMode=false;
+		Redraw();
+	}
+
+	function Redraw(){
+		var lines = urPoem.split("\n");
+		if (lineIndex>lines.length){
+			lineIndex=lines.length;
+		}
+		var result="";
+		for(var i=0;i<lineIndex&&i<lines.length;i++){
+			if (i>0){
+				result+="<br>";
+			}
+			result+=lines[i];
+		}
+		result='<div style="color:grey;">up/down to reveal/hide</div><br>'+result;
+		if (playMode==false){
+			result="";
+		}
+		outputPoem.innerHTML=result;
+	}
+
+	function onSourceChange(){
+		urPoem = poemSource.value;
+		lineIndex=0;
+		Redraw();
+	}
+
+
+	function onKeyPress(e){
+		if (playMode===false){
+			return;			
+		}
+	    var event = window.event ? window.event : e;
+	    if (e.keyCode == '38'){//up
+	    	if (lineIndex>0){
+	    		lineIndex--;
+	   			Redraw();
+	   			window.scrollTo(0,document.body.scrollHeight);
+	   			e.preventDefault();
+	   			return false;
+	    	}
+	    }
+	    if (e.keyCode == '40'){//down
+    		lineIndex++;
+   			Redraw();
+   			window.scrollTo(0,document.body.scrollHeight);
+   			e.preventDefault();
+   			return false;
+	    }
+
+	}
+	poemSource.oninput=onSourceChange;
+	setButton.onclick=setClick;
+	showButton.onclick=showClick;
+	document.onkeydown=onKeyPress;
+
+
+</script>
+</body>
+</html>
