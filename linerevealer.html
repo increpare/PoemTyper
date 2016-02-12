@@ -51,13 +51,17 @@ textarea {
 			lineIndex=lines.length;
 		}
 		var result="";
-		for(var i=0;i<lineIndex&&i<lines.length;i++){
+		var max=lineIndex;
+		for(var i=0;i<max&&i<lines.length;i++){
 			if (i>0){
 				result+="<br>";
 			}
 			result+=lines[i];
+			if (lines[i]==""){
+				max++;
+			}
 		}
-		result='<div style="color:grey;">up/down to reveal/hide</div><br>'+result;
+		result='<div style="color:grey;">up/down to hide/reveal</div><br>'+result;
 		if (playMode==false){
 			result="";
 		}
@@ -66,6 +70,11 @@ textarea {
 
 	function onSourceChange(){
 		urPoem = poemSource.value;
+
+		if (typeof(Storage) !== 'undefined') { //We have local storage support
+		    localStorage.revealDat = urPoem;
+		}
+
 		lineIndex=0;
 		Redraw();
 	}
@@ -98,6 +107,14 @@ textarea {
 	setButton.onclick=setClick;
 	showButton.onclick=showClick;
 	document.onkeydown=onKeyPress;
+
+	if (typeof(Storage) !== 'undefined') { //We have local storage support
+	    if (typeof(localStorage.revealDat) !== 'undefined' && localStorage.revealDat !== ""){
+	    	poemSource.value=localStorage.revealDat;
+	    	onSourceChange();
+	    	setClick();
+	    }
+	}
 
 
 </script>

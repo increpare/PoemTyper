@@ -41,6 +41,11 @@ textarea {
 
 	function onSourceChange(){
 		urPoem = poemSource.value;
+
+
+		if (typeof(Storage) !== 'undefined') { //We have local storage support
+		    localStorage.indexDat = urPoem;
+		}
 		onInput();
 	}
 
@@ -75,6 +80,15 @@ textarea {
 	setButton.onclick=setClick;
 	showButton.onclick=showClick;
 	inputPoem.oninput=onInput;	
+
+	if (typeof(Storage) !== 'undefined') { //We have local storage support
+	    if (typeof(localStorage.indexDat) !== 'undefined' && localStorage.indexDat !== ""){
+	    	poemSource.value=localStorage.indexDat;
+	    	onSourceChange();
+	    	setClick();
+	    }
+	}
+
 </script>
 </body>
 </html>
